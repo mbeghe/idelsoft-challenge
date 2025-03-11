@@ -36,8 +36,10 @@ export default function EmailList({ emails, selectedEmail, onEmailSelect, onSear
           >
             <ListItemText
               primary={email.subject}
+              primaryTypographyProps={{ noWrap: true }}
               secondary={email.body.substring(0, 100)}
               secondaryTypographyProps={{ noWrap: true }}
+              sx={{ maxWidth: '100%' }}
             />
           </StyledListItemButton>
         ))}
