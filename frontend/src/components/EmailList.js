@@ -7,7 +7,7 @@ const SearchContainer = styled(Box)(({ theme }) => ({
 }));
 
 const EmailListContainer = styled(Box)(({ theme }) => ({
-  width: 300,
+  width: 350,
   borderRight: `1px solid ${theme.palette.divider}`,
 }));
 
@@ -35,8 +35,17 @@ export default function EmailList({ emails, selectedEmail, onEmailSelect, onSear
             onClick={() => onEmailSelect(email)}
           >
             <ListItemText
-              primary={email.subject}
-              primaryTypographyProps={{ noWrap: true }}
+              primary={
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                    {email.subject}
+                  </Box>
+                  <Box sx={{ ml: 1, color: 'text.secondary', whiteSpace: 'nowrap' }}>
+                    {new Date(email.created_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+                  </Box>
+                </Box>
+              }
+              primaryTypographyProps={{ component: 'div' }}
               secondary={email.body.substring(0, 100)}
               secondaryTypographyProps={{ noWrap: true }}
               sx={{ maxWidth: '100%' }}

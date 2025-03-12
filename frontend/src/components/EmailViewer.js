@@ -13,7 +13,20 @@ const EmailPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const EmailHeader = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(2)
+  marginBottom: theme.spacing(2),
+  position: 'relative'
+}));
+
+const TimestampText = styled(Typography)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  color: theme.palette.text.secondary
+}));
+
+const EmailDivider = styled(Box)(({ theme }) => ({
+  borderTop: `1px solid ${theme.palette.divider}`,
+  margin: theme.spacing(2, 0)
 }));
 
 const EmailContent = styled(Typography)({
@@ -39,9 +52,14 @@ export default function EmailViewer({ email }) {
   return (
     <ViewerContainer>
       <EmailPaper>
-        <Typography variant="h5" gutterBottom sx={{ wordBreak: 'break-word' }}>
-          {email.subject}
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h5" sx={{ wordBreak: 'break-word', flex: 1 }}>
+            {email.subject}
+          </Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ ml: 2, whiteSpace: 'nowrap' }}>
+            {new Date(email.created_at).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })} at {new Date(email.created_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+          </Typography>
+        </Box>
         <EmailHeader>
           <RecipientText variant="subtitle2" color="text.secondary">
             To: <Box component="span" className="recipient-list">{email.to.join(', ')}</Box>
@@ -57,6 +75,7 @@ export default function EmailViewer({ email }) {
             </RecipientText>
           )}
         </EmailHeader>
+        <EmailDivider />
         <EmailContent>{email.body}</EmailContent>
       </EmailPaper>
     </ViewerContainer>
